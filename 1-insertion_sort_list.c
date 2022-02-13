@@ -38,8 +38,13 @@ int swap_list(listint_t *prevnode, listint_t *node)
  **/
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *head = *list;
+	listint_t *head;
 	listint_t *node;
+
+	if (list == NULL || *list == NULL)
+		return;
+
+	head = *list;
 
 	while (head)
 	{
