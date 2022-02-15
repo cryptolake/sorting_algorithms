@@ -24,9 +24,10 @@ void swap(int *ele0, int *ele1)
  * @array: array to partition
  * @low: starting index
  * @high: last index
+ * @arraysize: array size because betty doesn't like global
  * Return: return pivot index
  **/
-int partition(int *array, int low, int high)
+int partition(int *array, int low, int high, size_t arraysize)
 {
 	int i, j;
 	int pivot;
@@ -35,18 +36,19 @@ int partition(int *array, int low, int high)
 
 	i = low - 1;
 
-	for (j = low; j <= high - 1; j++)
+	for (j = low; j <= high; j++)
 	{
 		if (array[j] <= pivot)
 		{
 			i++;
-			swap(&array[i], &array[j]);
+			if (i != j)
+			{
+				swap(&array[i], &array[j]);
+				print_array(array, arraysize);
+			}
 			/* print_array(array, sizeof(array)); */
 		}
 	}
-
-	i++;
-	swap(&array[i], &array[high]);
 
 	return (i);
 }
@@ -56,24 +58,25 @@ int partition(int *array, int low, int high)
  * @low: the first index of the array
  * @high: last index of the array
  * @array: the array to sort
+ * @arraysize: array size because betty doesn't like global
+ * variables.
  *
  **/
-void rec_quicksort(int *array, int low, int high, size_t size)
+void rec_quicksort(int *array, int low, int high, size_t arraysize)
 {
 	int pivot;
 
 	if (low >= high || low < 0)
 		return;
 
-	pivot = partition(array, low, high);
-	print_array(array, size);
+	pivot = partition(array, low, high, arraysize);
 
 
 	/* before pivot */
-	rec_quicksort(array, low, pivot - 1, size);
+	rec_quicksort(array, low, pivot - 1, arraysize);
 
 	/* after pivot */
-	rec_quicksort(array, pivot + 1, high, size);
+	rec_quicksort(array, pivot + 1, high, arraysize);
 }
 
 /**
@@ -84,5 +87,7 @@ void rec_quicksort(int *array, int low, int high, size_t size)
 void quick_sort(int *array, size_t size)
 {
 	if (array != NULL && size > 1)
+	{
 		rec_quicksort(array, 0, size - 1, size);
+	}
 }
